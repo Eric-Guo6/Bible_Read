@@ -134,7 +134,7 @@ async function start() {
   await seedDatabase();
 
   app.listen(PORT, () => {
-    console.log(`读经挑战 App 运行在 http://localhost:${PORT}`);
+    console.log(`读经挑战 App 运行在端口 ${PORT}`);
   });
 }
 
