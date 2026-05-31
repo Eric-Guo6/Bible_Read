@@ -1,0 +1,114 @@
+<%- include('../partials/header') %>
+
+<% if (periodLabel) { %>
+  <span class="week-badge"><%= t('periodThis') %>：<%= periodLabel %></span>
+<% } %>
+
+<% if (message) { %>
+  <div class="success-banner"><%= message %></div>
+<% } %>
+
+<div class="card">
+  <h3><%= t('admin.weeklyLeaderboard') %></h3>
+  <% leaderboard.forEach(function(item, index) { %>
+    <div class="leaderboard-item" style="margin-bottom:0.75rem;">
+      <span class="rank">#<%= index + 1 %></span>
+      <%= t('groupTimes', { n: item.group.weeklyGoal }) %> — <%= item.groupScore %>%
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width: <%= item.groupScore %>%"></div>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+<% groupStatsList.forEach(function(gs) { %>
+  <div class="card">
+    <h3><%= t('groupTimes', { n: gs.group.weeklyGoal }) %> · <%= t('leader') %> <%= gs.group.leader %></h3>
+    <p>
+      <%= t('admin.membersCount', { n: gs.memberCount }) %> ·
+      <%= t('admin.avgRate') %> <strong><%= gs.groupScore %>%</strong> ·
+      <%= t('admin.totalCheckins', { n: gs.totalCheckIns }) %>
+    </p>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" style="width: <%= gs.groupScore %>%"></div>
+    </div>
+
+    <% if (gs.membersNotCheckedIn && gs.membersNotCheckedIn.length) { %>
+      <p style="margin-top:0.75rem; color:#a94442;">
+        <strong><%= t('admin.notCheckedIn') %>：</strong>
+        <%= gs.membersNotCheckedIn.map(m => m.username).join(', ') %>
+      </p>
+    <% } else if (gs.memberCount > 0) { %>
+      <p style="margin-top:0.75rem; color:var(--success);"><%= t('admin.allCheckedIn') %></p>
+    <% } %>
+
+    <details style="margin-top:0.5rem;">
+      <summary><%= t('admin.memberPerformance') %></summary>
+      <ul style="margin-top:0.5rem;">
+        <% gs.memberDetails.forEach(function(m) { %>
+          <li><%= t('admin.memberLine', { name: m.username, count: m.periodCount, rate: m.completionRate, streak: m.streak }) %></li>
+        <% }) %>
+      </ul>
+    </details>
+  </div>
+<% }) %>
+
+<div class="card">
+  <h3><%= t('admin.editGroups') %></h3>
+  <form action="/admin/group" method="POST" class="inline-form" style="flex-wrap:wrap; gap:0.5rem;">
+    <input type="text" name="editName" placeholder="<%= t('admin.editNamePlaceholder') %>" style="width:180px;" />
+    <input type="text" name="name" placeholder="<%= t('admin.namePlaceholder') %>" required />
+    <input type="text" name="leader" placeholder="<%= t('admin.leaderPlaceholder') %>" required />
+    <input type="number" name="weeklyGoal" min="1" max="14" placeholder="<%= t('admin.goalPlaceholder') %>" required />
+    <button type="submit" class="btn btn-small btn-primary"><%= t('admin.save') %></button>
+  </form>
+</div>
+
+<div class="card">
+  <h3><%= t('admin.allUsers') %></h3>
+  <div style="overflow-x:auto;">
+    <table>
+      <thead>
+        <tr>
+          <th><%= t('admin.username') %></th>
+          <th><%= t('admin.email') %></th>
+          <th><%= t('admin.group') %></th>
+          <th><%= t('admin.role') %></th>
+          <th><%= t('admin.actions') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(function(u) { %>
+          <tr>
+            <td><%= u.username %></td>
+            <td><%= u.email %></td>
+            <td>
+              <form action="/admin/user/<%= u._id %>/group" method="POST" class="inline-form">
+                <select name="group">
+                  <% ['3-times','4-times','5-times','7-times'].forEach(function(gn) { %>
+                    <option value="<%= gn %>" <%= u.group === gn ? 'selected' : '' %>><%= gn %></option>
+                  <% }) %>
+                </select>
+                <button type="submit" class="btn btn-small"><%= t('admin.changeGroup') %></button>
+              </form>
+            </td>
+            <td>
+              <form action="/admin/user/<%= u._id %>/role" method="POST" class="inline-form">
+                <select name="role">
+                  <option value="user" <%= u.role === 'user' ? 'selected' : '' %>>user</option>
+                  <option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>admin</option>
+                </select>
+                <button type="submit" class="btn btn-small"><%= t('admin.changeRole') %></button>
+              </form>
+            </td>
+            <td>
+              <a href="/admin/user/<%= u._id %>/checkins"><%= t('admin.checkinRecords') %></a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

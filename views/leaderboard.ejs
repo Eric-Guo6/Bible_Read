@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+
+<% if (periodLabel) { %>
+  <span class="week-badge"><%= t('periodThis') %>：<%= periodLabel %></span>
+<% } %>
+<p class="page-desc"><%= t('leaderboard.desc') %></p>
+
+<% if (allPeriods && allPeriods.length) { %>
+  <div class="period-tabs">
+    <% allPeriods.forEach(function(p) { %>
+      <a href="/leaderboard?period=<%= p.id %>"
+        class="period-tab <%= period && period.id === p.id ? 'active' : '' %>">
+        <%= lang === 'en' ? p.labelEn : p.labelZh %>
+      </a>
+    <% }) %>
+  </div>
+<% } %>
+
+<% if (!seasonActive && !leaderboard.length) { %>
+  <div class="card"><p><%= t('dashboard.outsideSeason') %></p></div>
+<% } else { %>
+  <% leaderboard.forEach(function(item, index) { %>
+    <div class="card leaderboard-item">
+      <p class="leaderboard-head">
+        <span class="rank">#<%= index + 1 %></span>
+        <strong><%= t('groupTimes', { n: item.group.weeklyGoal }) %></strong>
+        <% if (userGroup === item.group.name) { %>
+          <span class="your-group-tag"><%= t('leaderboard.yourGroup') %></span>
+        <% } %>
+      </p>
+      <p class="leaderboard-meta"><%= t('leader') %> <%= item.group.leader %></p>
+      <p><%= t('leaderboard.groupScore') %>：<strong><%= item.groupScore %>%</strong></p>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width: <%= item.groupScore %>%"></div>
+      </div>
+      <p class="leaderboard-foot"><%= t('leaderboard.totalCheckins', { n: item.totalCheckIns }) %></p>
+    </div>
+  <% }) %>
+<% } %>
+
+<%- include('partials/footer') %>

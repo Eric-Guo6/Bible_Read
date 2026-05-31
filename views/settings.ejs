@@ -1,0 +1,56 @@
+<%- include('partials/header') %>
+
+<div class="card settings-card">
+  <p class="settings-intro"><%= t('settings.intro') %></p>
+
+  <% if (saved) { %>
+    <div class="success-banner"><%= t('settings.saved') %></div>
+  <% } %>
+
+  <form action="/settings" method="POST" class="settings-form">
+    <section class="settings-section">
+      <h3 class="settings-section-title"><%= t('settings.languageTitle') %></h3>
+      <p class="settings-section-desc"><%= t('settings.languageDesc') %></p>
+      <div class="option-group">
+        <label class="option-item <%= currentLang === 'zh' ? 'option-selected' : '' %>">
+          <input type="radio" name="language" value="zh" <%= currentLang === 'zh' ? 'checked' : '' %> />
+          <span class="option-label"><%= t('settings.chinese') %></span>
+        </label>
+        <label class="option-item <%= currentLang === 'en' ? 'option-selected' : '' %>">
+          <input type="radio" name="language" value="en" <%= currentLang === 'en' ? 'checked' : '' %> />
+          <span class="option-label"><%= t('settings.english') %></span>
+        </label>
+      </div>
+    </section>
+
+    <section class="settings-section">
+      <h3 class="settings-section-title"><%= t('settings.themeTitle') %></h3>
+      <p class="settings-section-desc"><%= t('settings.themeDesc') %></p>
+      <div class="option-group">
+        <label class="option-item <%= currentTheme === 'light' ? 'option-selected' : '' %>">
+          <input type="radio" name="theme" value="light" <%= currentTheme === 'light' ? 'checked' : '' %> />
+          <span class="option-label"><%= t('settings.themeLight') %></span>
+        </label>
+        <label class="option-item <%= currentTheme === 'dark' ? 'option-selected' : '' %>">
+          <input type="radio" name="theme" value="dark" <%= currentTheme === 'dark' ? 'checked' : '' %> />
+          <span class="option-label"><%= t('settings.themeDark') %></span>
+        </label>
+      </div>
+    </section>
+
+    <button type="submit" class="btn btn-primary btn-block"><%= t('settings.save') %></button>
+  </form>
+
+  <% if (currentUser && currentUser.role === 'admin') { %>
+    <section class="settings-section settings-admin-section">
+      <h3 class="settings-section-title"><%= t('settings.adminSectionTitle') %></h3>
+      <p class="settings-section-desc"><%= t('settings.adminSectionDesc') %></p>
+      <a href="/admin" class="btn btn-admin-only btn-block">
+        <span class="admin-only-badge"><%= t('settings.adminOnlyBadge') %></span>
+        <%= t('settings.adminPanelBtn') %>
+      </a>
+    </section>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

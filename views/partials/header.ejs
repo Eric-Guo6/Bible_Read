@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="<%= lang === 'en' ? 'en' : 'zh-CN' %>" data-theme="<%= theme || 'light' %>">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title><%= title %> | <%= t('appName') %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="mobile-app <%= currentUser ? 'has-bottom-nav' : 'guest-layout' %> theme-<%= theme || 'light' %>">
+  <% if (pageTitle) { %>
+    <header class="page-header">
+      <h1 class="page-header-title"><%= pageTitle %></h1>
+    </header>
+  <% } %>
+  <main class="container">

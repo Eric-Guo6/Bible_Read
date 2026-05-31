@@ -1,0 +1,46 @@
+<%- include('partials/header') %>
+
+<span class="week-badge"><%= t('weekThis') %>：<%= weekRange %></span>
+
+<div class="card checkin-card">
+  <% if (typeof seasonActive !== 'undefined' && seasonActive === false) { %>
+    <div class="error-list"><li><%= t('season.notActive') %></li></div>
+    <p class="text-center-link"><a href="/dashboard"><%= t('checkin.backDashboard') %></a></p>
+  <% } else if (alreadyCheckedIn) { %>
+    <div class="success-banner"><%= t('checkin.alreadyDone') %></div>
+    <button class="btn btn-disabled btn-block" disabled><%= t('checkin.alreadyBtn') %></button>
+    <p class="text-center-link"><a href="/dashboard"><%= t('checkin.backDashboard') %></a></p>
+  <% } else { %>
+
+    <% if (errors && errors.length) { %>
+      <ul class="error-list">
+        <% errors.forEach(function(e) { %>
+          <li><%= e.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    <form action="/checkin" method="POST">
+      <div class="form-group">
+        <label for="biblePassage"><%= t('checkin.passage') %><%= t('checkin.required') %></label>
+        <input type="text" id="biblePassage" name="biblePassage" required
+          placeholder="<%= t('checkin.passagePlaceholder') %>"
+          value="<%= form.biblePassage || '' %>" />
+      </div>
+      <div class="form-group">
+        <label for="reflection"><%= t('checkin.reflection') %></label>
+        <textarea id="reflection" name="reflection" maxlength="500"
+          placeholder="<%= t('checkin.reflectionPlaceholder') %>"><%= form.reflection || '' %></textarea>
+      </div>
+      <div class="form-group form-check">
+        <label>
+          <input type="checkbox" name="completed" checked />
+          <%= t('checkin.completedLabel') %>
+        </label>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block"><%= t('checkin.submit') %></button>
+    </form>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

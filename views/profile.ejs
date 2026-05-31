@@ -1,0 +1,107 @@
+<%- include('partials/header') %>
+
+<span class="week-badge"><%= t('weekThis') %>：<%= weekRange %></span>
+<% if (periodLabel) { %>
+  <span class="week-badge"><%= t('periodThis') %>：<%= periodLabel %></span>
+<% } %>
+
+<% if (settingsSaved) { %>
+  <div class="success-banner"><%= t('profile.settingsSaved') %></div>
+<% } %>
+<% if (groupChanged) { %>
+  <div class="success-banner"><%= t('profile.changeGroupSuccess') %></div>
+<% } %>
+<% if (groupChangeError === 'alreadyChanged') { %>
+  <div class="error-list"><li><%= t('profile.changeGroupErrorAlready') %></li></div>
+<% } %>
+<% if (groupChangeError === 'notInSeason') { %>
+  <div class="error-list"><li><%= t('profile.changeGroupErrorNotInSeason') %></li></div>
+<% } %>
+
+<div class="card">
+  <p class="profile-name"><strong><%= user.username %></strong></p>
+  <p class="profile-email"><%= user.email %></p>
+  <p><%= t('profile.groupLabel') %>：<%= t('groupTimes', { n: group.weeklyGoal }) %>（<%= t('leader') %> <%= group.leader %>）</p>
+
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="number"><%= stats.completionPercent %>%</div>
+      <div class="label"><%= t('dashboard.weeklyRate') %></div>
+    </div>
+    <div class="stat-box">
+      <div class="number"><%= stats.weeklyCount %>/<%= stats.weeklyGoal %></div>
+      <div class="label"><%= t('dashboard.weeklyCheckins') %></div>
+    </div>
+    <% if (periodStats) { %>
+    <div class="stat-box">
+      <div class="number"><%= periodStats.periodCompletionPercent %>%</div>
+      <div class="label"><%= t('profile.periodRate') %></div>
+    </div>
+    <div class="stat-box">
+      <div class="number"><%= periodStats.periodCount %></div>
+      <div class="label"><%= t('dashboard.periodCheckins') %></div>
+    </div>
+    <% } else { %>
+    <div class="stat-box">
+      <div class="number"><%= stats.totalDays %></div>
+      <div class="label"><%= t('profile.totalDays') %></div>
+    </div>
+    <div class="stat-box">
+      <div class="number"><%= stats.streak %></div>
+      <div class="label"><%= t('profile.streak') %></div>
+    </div>
+    <% } %>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" style="width: <%= stats.completionPercent %>%"></div>
+  </div>
+</div>
+
+<% if (canChangeGroup) { %>
+<div class="card">
+  <h3 class="card-section-title"><%= t('profile.changeGroupTitle') %></h3>
+  <p class="settings-section-desc"><%= t('profile.changeGroupDesc') %></p>
+  <form action="/profile/change-group" method="POST">
+    <div class="form-group">
+      <select name="group" required>
+        <% groups.forEach(function(g) { %>
+          <option value="<%= g.name %>" <%= user.group === g.name ? 'selected' : '' %>>
+            <%= t('auth.groupOption', { goal: g.weeklyGoal, leader: g.leader }) %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block"><%= t('profile.changeGroupBtn') %></button>
+  </form>
+</div>
+<% } else if (period) { %>
+<div class="card">
+  <p class="muted-note"><%= t('profile.changeGroupOnce') %></p>
+</div>
+<% } %>
+
+<div class="card profile-actions-card">
+  <a href="/settings" class="btn btn-secondary btn-block"><%= t('profile.settingsBtn') %></a>
+  <form action="/logout" method="POST" class="profile-logout-form">
+    <button type="submit" class="btn btn-outline btn-block"><%= t('profile.logoutBtn') %></button>
+  </form>
+</div>
+
+<div class="card profile-history-card">
+  <h3 class="card-section-title"><%= t('profile.history') %></h3>
+  <% if (!history.length) { %>
+    <p><%= t('profile.noHistory') %><a href="/checkin"><%= t('profile.checkinLink') %></a><%= t('profile.noHistoryEnd') %></p>
+  <% } else { %>
+    <ul class="history-list">
+      <% history.forEach(function(c) { %>
+        <li class="history-item">
+          <strong><%= new Date(c.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN') %></strong>
+          — <%= c.biblePassage %>
+          <% if (c.reflection) { %><br><em class="history-reflection"><%= c.reflection %></em><% } %>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

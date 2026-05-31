@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+
+<p class="page-desc"><%= t('community.desc') %></p>
+
+<div class="filter-bar">
+  <span class="filter-label"><%= t('community.sortLikes') %> / <%= t('community.sortRecent') %>:</span>
+  <a href="/community?sort=likes" class="filter-chip <%= sort === 'likes' ? 'active' : '' %>"><%= t('community.sortLikes') %></a>
+  <a href="/community?sort=recent" class="filter-chip <%= sort === 'recent' ? 'active' : '' %>"><%= t('community.sortRecent') %></a>
+</div>
+
+<% if (!posts.length) { %>
+  <div class="card">
+    <p><%= t('community.empty') %></p>
+  </div>
+<% } else { %>
+  <% posts.forEach(function(p) { %>
+    <div class="card community-card">
+      <p class="community-meta">
+        <strong><%= p.username %></strong>
+        <% if (p.isMine) { %><span class="mine-tag"><%= t('community.mine') %></span><% } %>
+        <% if (p.groupGoal) { %> · <%= t('groupTimes', { n: p.groupGoal }) %><% } %>
+      </p>
+      <p class="community-passage"><%= t('community.passage') %>：<%= p.biblePassage %></p>
+      <p class="community-reflection"><%= p.reflection %></p>
+      <div class="community-actions">
+        <form action="/community/<%= p._id %>/like?sort=<%= sort %>" method="POST" class="like-form">
+          <button type="submit" class="btn btn-small <%= p.liked ? 'btn-primary' : 'btn-secondary' %>">
+            <%= p.liked ? t('community.liked') : t('community.like') %> · <%= t('community.likes', { n: p.likeCount }) %>
+          </button>
+        </form>
+      </div>
+    </div>
+  <% }) %>
+<% } %>
+
+<%- include('partials/footer') %>

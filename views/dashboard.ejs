@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+<%- include('partials/onboarding') %>
+
+<span class="week-badge"><%= t('weekThis') %>：<%= weekRange %></span>
+<% if (periodLabel) { %>
+  <span class="week-badge"><%= t('periodThis') %>：<%= periodLabel %></span>
+<% } %>
+
+<% if (justChecked) { %>
+  <div class="success-banner"><%= t('dashboard.checkinSuccess') %></div>
+<% } %>
+
+<div class="card">
+  <p class="dashboard-greeting"><%= t('dashboard.hello', { name: user.username }) %></p>
+  <p><%= t('dashboard.yourGroup') %>：<strong><%= t('groupTimes', { n: group.weeklyGoal }) %></strong>（<%= t('leader') %> <%= group.leader %>）</p>
+
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="number"><%= checkedToday ? '✓' : '—' %></div>
+      <div class="label"><%= t('dashboard.checkedToday') %></div>
+    </div>
+    <div class="stat-box">
+      <div class="number"><%= stats.weeklyCount %>/<%= stats.weeklyGoal %></div>
+      <div class="label"><%= t('dashboard.weeklyCheckins') %></div>
+    </div>
+    <div class="stat-box">
+      <div class="number"><%= stats.completionPercent %>%</div>
+      <div class="label"><%= t('dashboard.weeklyRate') %></div>
+    </div>
+    <div class="stat-box">
+      <div class="number"><%= stats.streak %></div>
+      <div class="label"><%= t('dashboard.streakDays') %></div>
+    </div>
+  </div>
+
+  <% if (periodStats) { %>
+    <p class="period-summary">
+      <%= t('dashboard.periodRate') %>：<strong><%= periodStats.periodCompletionPercent %>%</strong>
+      · <%= t('dashboard.periodCheckins') %>：<%= periodStats.periodCount %>
+    </p>
+  <% } %>
+
+  <% if (checkedToday) { %>
+    <button class="btn btn-disabled btn-block" disabled><%= t('dashboard.alreadyCheckedIn') %></button>
+  <% } else if (seasonActive) { %>
+    <a href="/checkin" class="btn btn-primary btn-block"><%= t('dashboard.goCheckin') %></a>
+  <% } else { %>
+    <p class="muted-note"><%= t('dashboard.outsideSeason') %></p>
+  <% } %>
+</div>
+
+<% if (groupStats) { %>
+<div class="card">
+  <h3><%= t('dashboard.groupProgress') %></h3>
+  <p><%= t('dashboard.groupScore') %>：<strong><%= groupStats.groupScore %>%</strong></p>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" style="width: <%= groupStats.groupScore %>%"></div>
+  </div>
+  <p><%= t('dashboard.groupRank') %>：<%= t('rank', { n: myGroupRank }) %> · <%= t('members') %> <%= groupStats.memberCount %> <%= t('people') %></p>
+  <a href="/leaderboard"><%= t('dashboard.viewLeaderboard') %></a>
+</div>
+<% } %>
+
+<%- include('partials/footer') %>

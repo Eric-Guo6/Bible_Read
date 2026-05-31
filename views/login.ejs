@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+
+<div class="card" style="max-width:480px; margin:2rem auto;">
+  <% if (errors && errors.length) { %>
+    <ul class="error-list">
+      <% errors.forEach(function(e) { %>
+        <li><%= e.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <form action="/login" method="POST">
+    <div class="form-group">
+      <label for="email"><%= t('auth.email') %></label>
+      <input type="email" id="email" name="email" required
+        value="<%= old.email || '' %>" />
+    </div>
+    <div class="form-group">
+      <label for="password"><%= t('auth.password') %></label>
+      <input type="password" id="password" name="password" required />
+    </div>
+    <button type="submit" class="btn btn-primary"><%= t('auth.submitLogin') %></button>
+  </form>
+  <p style="margin-top:1rem;"><%= t('auth.noAccount') %> <a href="/register"><%= t('auth.goRegister') %></a></p>
+</div>
+
+<%- include('partials/footer') %>

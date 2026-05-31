@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <h1><%= t('home.heroTitle') %></h1>
+  <p><%= t('home.heroDesc') %></p>
+  <div class="hero-actions">
+    <% if (currentUser) { %>
+      <a href="/dashboard" class="btn btn-primary"><%= t('home.enterDashboard') %></a>
+      <a href="/checkin" class="btn btn-secondary"><%= t('home.checkinToday') %></a>
+    <% } else { %>
+      <a href="/register" class="btn btn-primary"><%= t('home.registerNow') %></a>
+      <a href="/login" class="btn btn-secondary"><%= t('nav.login') %></a>
+    <% } %>
+  </div>
+</section>
+
+<section class="card">
+  <h2><%= t('home.fourGroupsTitle') %></h2>
+  <p><%= t('home.fourGroupsDesc') %></p>
+  <ul style="margin-top:1rem; padding-left:1.25rem;">
+    <% groups.forEach(function(g) { %>
+      <li><%= t('home.groupLine', { n: g.weeklyGoal, leader: g.leader, goal: g.weeklyGoal }) %></li>
+    <% }) %>
+  </ul>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,31 @@
+  </main>
+
+  <% if (currentUser) { %>
+    <nav class="bottom-nav bottom-nav-5" aria-label="<%= t('nav.mainNav') %>">
+      <a href="/dashboard" class="bottom-nav-item <%= activeNav === 'home' ? 'active' : '' %>">
+        <span class="bottom-nav-label"><%= t('nav.home') %></span>
+      </a>
+      <a href="/checkin" class="bottom-nav-item <%= activeNav === 'checkin' ? 'active' : '' %>">
+        <span class="bottom-nav-label"><%= t('nav.checkin') %></span>
+      </a>
+      <a href="/community" class="bottom-nav-item <%= activeNav === 'community' ? 'active' : '' %>">
+        <span class="bottom-nav-label"><%= t('nav.community') %></span>
+      </a>
+      <a href="/leaderboard" class="bottom-nav-item <%= activeNav === 'leaderboard' ? 'active' : '' %>">
+        <span class="bottom-nav-label"><%= t('nav.leaderboard') %></span>
+      </a>
+      <a href="/profile" class="bottom-nav-item <%= activeNav === 'profile' ? 'active' : '' %>">
+        <span class="bottom-nav-label"><%= t('nav.profile') %></span>
+      </a>
+    </nav>
+  <% } else { %>
+    <footer class="guest-footer">
+      <p class="guest-footer-links">
+        <a href="/login"><%= t('nav.login') %></a>
+        <span aria-hidden="true"> · </span>
+        <a href="/register"><%= t('nav.register') %></a>
+      </p>
+    </footer>
+  <% } %>
+</body>
+</html>

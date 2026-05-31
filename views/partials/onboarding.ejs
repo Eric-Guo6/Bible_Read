@@ -1,0 +1,29 @@
+<% if (typeof showOnboarding !== 'undefined' && showOnboarding) { %>
+<div class="onboarding-overlay" id="onboarding-overlay" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
+  <div class="onboarding-card">
+    <h2 id="onboarding-title"><%= t('onboarding.title') %></h2>
+    <p class="onboarding-sub"><%= t('onboarding.subtitle') %></p>
+    <ol class="onboarding-steps">
+      <li>
+        <strong><%= t('onboarding.step1Title') %></strong>
+        <p><%= t('onboarding.step1Desc') %></p>
+      </li>
+      <li>
+        <strong><%= t('onboarding.step2Title') %></strong>
+        <p><%= t('onboarding.step2Desc') %></p>
+      </li>
+      <li>
+        <strong><%= t('onboarding.step3Title') %></strong>
+        <p><%= t('onboarding.step3Desc') %></p>
+      </li>
+      <li>
+        <strong><%= t('onboarding.step4Title') %></strong>
+        <p><%= t('onboarding.step4Desc') %></p>
+      </li>
+    </ol>
+    <form action="/onboarding/complete" method="POST">
+      <button type="submit" class="btn btn-primary onboarding-btn"><%= t('onboarding.gotIt') %></button>
+    </form>
+  </div>
+</div>
+<% } %>

@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+
+<div class="card">
+  <p><a href="/admin"><%= t('admin.backAdmin') %></a></p>
+
+  <% if (!checkins.length) { %>
+    <p><%= t('admin.noCheckins') %></p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th><%= t('admin.date') %></th>
+          <th><%= t('admin.passage') %></th>
+          <th><%= t('admin.reflection') %></th>
+          <th><%= t('admin.completed') %></th>
+          <th><%= t('admin.actions') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% checkins.forEach(function(c) { %>
+          <tr>
+            <td><%= new Date(c.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN') %></td>
+            <td><%= c.biblePassage %></td>
+            <td><%= c.reflection || t('none') %></td>
+            <td><%= c.completed ? t('yes') : t('no') %></td>
+            <td>
+              <form action="/admin/checkin/<%= c._id %>/delete" method="POST"
+                onsubmit="return confirm('<%= t('admin.confirmDelete') %>');">
+                <button type="submit" class="btn btn-small btn-secondary"><%= t('admin.delete') %></button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>
