@@ -1,6 +1,7 @@
 <%- include('partials/header') %>
 <%- include('partials/onboarding') %>
 
+<span class="week-badge timezone-badge"><%= t('timezone.now') %>：<%= appNowLabel %> (<%= appTimezone %>)</span>
 <span class="week-badge"><%= t('weekThis') %>：<%= weekRange %></span>
 <% if (periodLabel) { %>
   <span class="week-badge"><%= t('periodThis') %>：<%= periodLabel %></span>

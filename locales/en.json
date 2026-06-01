@@ -17,6 +17,9 @@
   "footer": "Bible Reading Challenge · Encourage one another in daily reading",
   "weekThis": "This week",
   "periodThis": "This period",
+  "timezone": {
+    "now": "Now (Vancouver)"
+  },
   "groupTimes": "{n}-times group",
   "leader": "Leader",
   "members": "Members",

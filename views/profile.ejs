@@ -95,7 +95,7 @@
     <ul class="history-list">
       <% history.forEach(function(c) { %>
         <li class="history-item">
-          <strong><%= new Date(c.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN') %></strong>
+          <strong><%= formatAppDate(c.date) %></strong>
           — <%= c.biblePassage %>
           <% if (c.reflection) { %><br><em class="history-reflection"><%= c.reflection %></em><% } %>
         </li>

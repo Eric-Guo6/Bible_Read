@@ -17,6 +17,9 @@
   "footer": "读经挑战打卡 · 彼此勉励，坚持每日读经",
   "weekThis": "本周",
   "periodThis": "本阶段",
+  "timezone": {
+    "now": "当前时间（温哥华）"
+  },
   "groupTimes": "{n}次组",
   "leader": "组长",
   "members": "成员",

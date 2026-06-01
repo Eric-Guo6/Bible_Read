@@ -11,6 +11,10 @@ const {
   startOfDay,
   endOfDay,
 } = require("./weekUtils");
+const {
+  formatYmdInZone,
+  addCalendarDaysInZone,
+} = require("./timezoneUtils");
 const { getWeeksInPeriod, resolvePeriod } = require("./seasonUtils");
 
 function personalCompletionRate(checkInCount, weeklyGoal) {
@@ -71,36 +75,27 @@ async function getStreakDays(userId) {
   if (checkIns.length === 0) return 0;
 
   const daySet = new Set(
-    checkIns.map((c) => {
-      const d = new Date(c.date);
-      return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-    }),
+    checkIns.map((c) => formatYmdInZone(c.date)),
   );
-  const sortedDays = [...daySet]
-    .map((key) => {
-      const [y, m, d] = key.split("-").map(Number);
-      return new Date(y, m, d);
-    })
-    .sort((a, b) => b - a);
+  const sortedDays = [...daySet].sort((a, b) => b.localeCompare(a));
 
-  const today = startOfDay();
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
+  const todayKey = formatYmdInZone(new Date());
+  const yesterdayKey = formatYmdInZone(
+    addCalendarDaysInZone(new Date(), -1),
+  );
 
   const latest = sortedDays[0];
-  const latestTime = startOfDay(latest).getTime();
-  const todayTime = today.getTime();
-  const yesterdayTime = yesterday.getTime();
-
-  if (latestTime !== todayTime && latestTime !== yesterdayTime) {
+  if (latest !== todayKey && latest !== yesterdayKey) {
     return 0;
   }
 
   let streak = 1;
   for (let i = 1; i < sortedDays.length; i++) {
-    const prev = startOfDay(sortedDays[i - 1]);
-    const curr = startOfDay(sortedDays[i]);
-    const diffDays = (prev - curr) / (1000 * 60 * 60 * 24);
+    const prev = sortedDays[i - 1];
+    const curr = sortedDays[i];
+    const prevDate = new Date(prev + "T12:00:00");
+    const currDate = new Date(curr + "T12:00:00");
+    const diffDays = (prevDate - currDate) / (1000 * 60 * 60 * 24);
     if (diffDays === 1) streak++;
     else break;
   }
@@ -109,12 +104,7 @@ async function getStreakDays(userId) {
 
 async function getTotalCheckInDays(userId) {
   const checkIns = await CheckIn.find({ userId }).select("date");
-  const daySet = new Set(
-    checkIns.map((c) => {
-      const d = new Date(c.date);
-      return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-    }),
-  );
+  const daySet = new Set(checkIns.map((c) => formatYmdInZone(c.date)));
   return daySet.size;
 }
 

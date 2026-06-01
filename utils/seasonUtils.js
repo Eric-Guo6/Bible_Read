@@ -10,16 +10,17 @@ const {
   startOfDay,
   endOfDay,
 } = require("./weekUtils");
+const {
+  calendarDateInZone,
+  getYearInZone,
+  APP_TIMEZONE,
+} = require("./timezoneUtils");
 
 const CHALLENGE_YEAR =
-  Number(process.env.CHALLENGE_YEAR) || new Date().getFullYear();
+  Number(process.env.CHALLENGE_YEAR) || getYearInZone();
 
-/**
- * 公历月份 1–12 构造日期（本地时区）
- * 注意：Date 的 month 从 0 起算，这里用人类习惯的 6=六月、8=八月
- */
 function calendarDate(year, month1to12, day) {
-  return new Date(year, month1to12 - 1, day);
+  return calendarDateInZone(year, month1to12, day);
 }
 
 /** 某年的三个阶段（与教会挑战一致） */
@@ -153,6 +154,7 @@ function getPeriodLabel(period, lang = "zh") {
 }
 
 module.exports = {
+  APP_TIMEZONE,
   CHALLENGE_YEAR,
   getAllPeriods,
   getSeasonBounds,

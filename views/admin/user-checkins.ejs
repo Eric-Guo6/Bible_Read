@@ -19,7 +19,7 @@
       <tbody>
         <% checkins.forEach(function(c) { %>
           <tr>
-            <td><%= new Date(c.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN') %></td>
+            <td><%= formatAppDate(c.date) %></td>
             <td><%= c.biblePassage %></td>
             <td><%= c.reflection || t('none') %></td>
             <td><%= c.completed ? t('yes') : t('no') %></td>
