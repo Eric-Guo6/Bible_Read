@@ -17,6 +17,15 @@
 <% if (groupChangeError === 'notInSeason') { %>
   <div class="error-list"><li><%= t('profile.changeGroupErrorNotInSeason') %></li></div>
 <% } %>
+<% if (reflectionStatus === 'updated') { %>
+  <div class="success-banner"><%= t('profile.reflectionUpdated') %></div>
+<% } %>
+
+<% if (errorMessage) { %>
+  <ul class="error-list">
+    <li><%= errorMessage %></li>
+  </ul>
+<% } %>
 
 <div class="card">
   <p class="profile-name"><strong><%= user.username %></strong></p>
@@ -89,15 +98,52 @@
 
 <div class="card profile-history-card">
   <h3 class="card-section-title"><%= t('profile.history') %></h3>
+
   <% if (!history.length) { %>
-    <p><%= t('profile.noHistory') %><a href="/checkin"><%= t('profile.checkinLink') %></a><%= t('profile.noHistoryEnd') %></p>
+    <p>
+      <%= t('profile.noHistory') %>
+      <a href="/checkin"><%= t('profile.checkinLink') %></a>
+      <%= t('profile.noHistoryEnd') %>
+    </p>
   <% } else { %>
     <ul class="history-list">
       <% history.forEach(function(c) { %>
         <li class="history-item">
           <strong><%= formatAppDate(c.date) %></strong>
           — <%= c.biblePassage %>
-          <% if (c.reflection) { %><br><em class="history-reflection"><%= c.reflection %></em><% } %>
+
+          <form
+  action="/checkins/<%= c._id %>/reflection"
+  method="POST"
+  class="reflection-edit-form"
+>
+  <textarea
+    name="reflection"
+    maxlength="500"
+    class="reflection-edit-textarea"
+    placeholder="<%= t('profile.reflectionPlaceholder') %>"
+    readonly
+  ><%= c.reflection || '' %></textarea>
+
+  <% if (c.reflectionUpdatedAt) { %>
+    <p class="muted-note">
+      <%= t('profile.reflectionEdited') %>
+    </p>
+  <% } %>
+
+  <div class="reflection-actions">
+    <button
+      type="button"
+      class="btn btn-small btn-outline reflection-edit-btn"
+    >
+      <%= t('profile.editReflection') %>
+    </button>
+
+    <button type="submit" class="btn btn-small btn-secondary">
+      <%= t('profile.saveReflection') %>
+    </button>
+  </div>
+</form>
         </li>
       <% }) %>
     </ul>

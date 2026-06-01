@@ -38,8 +38,7 @@ router.get("/dashboard", requireAuth, async (req, res) => {
     periodLabel = getPeriodRangeLabel(period, res.locals.lang);
     groupStats = await getGroupStats(user.group, period);
     const leaderboard = await getLeaderboard(period);
-    myGroupRank =
-      leaderboard.findIndex((g) => g.group.name === user.group) + 1;
+    myGroupRank = leaderboard.findIndex((g) => g.group.name === user.group) + 1;
   }
 
   const periodStats = period
@@ -104,8 +103,7 @@ router.get("/profile", requireAuth, async (req, res) => {
     .sort({ date: -1 })
     .limit(50);
 
-  const canChangeGroup =
-    period && user.lastGroupChangePeriod !== period.id;
+  const canChangeGroup = period && user.lastGroupChangePeriod !== period.id;
 
   res.render("profile", {
     title: req.t("profile.title"),
@@ -122,6 +120,8 @@ router.get("/profile", requireAuth, async (req, res) => {
     settingsSaved: req.query.settingsSaved === "1",
     groupChanged: req.query.groupChanged === "1",
     groupChangeError: req.query.groupChangeError || null,
+    reflectionStatus: req.query.reflection || "",
+    errorMessage: req.query.error || "",
   });
 });
 

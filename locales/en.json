@@ -99,7 +99,7 @@
   "checkin": {
     "title": "Check-in",
     "pageTitle": "Today's reading check-in",
-    "alreadyDone": "You already checked in today. See you tomorrow!",
+    "alreadyDone": "You already checked in today. See you tomorrow! (You can re-edit your reflection on the profile page.)",
     "alreadyBtn": "Already Checked In",
     "backDashboard": "Back to dashboard",
     "passage": "Bible passage read today",
@@ -154,7 +154,12 @@
     "changeGroupSuccess": "Group updated.",
     "changeGroupErrorNotInSeason": "Not in challenge season.",
     "changeGroupErrorAlready": "You already changed groups this period.",
-    "changeGroupErrorInvalid": "Please select a valid group."
+    "changeGroupErrorInvalid": "Please select a valid group.",
+    "reflectionUpdated": "Reflection updated.",
+    "reflectionPlaceholder": "Write or edit your reflection...",
+    "reflectionEdited": "Edited",
+    "saveReflection": "Save reflection",
+    "editReflection": "Edit reflection"
   },
   "onboarding": {
     "title": "Welcome to Bible Challenge",

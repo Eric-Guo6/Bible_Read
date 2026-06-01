@@ -99,7 +99,7 @@
   "checkin": {
     "title": "今日打卡",
     "pageTitle": "今日读经打卡",
-    "alreadyDone": "你今天已经打过卡了。明天再来吧！",
+    "alreadyDone": "你今天已经打过卡了。明天再来吧！(你可以在profile页面重新编辑心得)。",
     "alreadyBtn": "Already Checked In",
     "backDashboard": "返回主页",
     "passage": "今日阅读的经文",
@@ -154,7 +154,12 @@
     "changeGroupSuccess": "小组已更新。",
     "changeGroupErrorNotInSeason": "当前不在挑战期内，无法更换。",
     "changeGroupErrorAlready": "本挑战月已更换过小组。",
-    "changeGroupErrorInvalid": "请选择有效小组。"
+    "changeGroupErrorInvalid": "请选择有效小组。",
+    "reflectionUpdated": "心得已更新。",
+    "reflectionPlaceholder": "写下或修改你的心得...",
+    "reflectionEdited": "已编辑",
+    "saveReflection": "保存心得",
+    "editReflection": "编辑心得"
   },
   "onboarding": {
     "title": "欢迎使用读经挑战",

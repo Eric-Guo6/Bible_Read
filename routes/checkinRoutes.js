@@ -108,7 +108,50 @@ router.post(
       }
       throw err;
     }
-  }
+  },
+);
+
+// 编辑自己的打卡心得
+router.post(
+  "/checkins/:id/reflection",
+  requireAuth,
+  [
+    body("reflection")
+      .optional()
+      .trim()
+      .isLength({ max: 500 })
+      .withMessage("errors.reflectionLength"),
+  ],
+  async (req, res) => {
+    const result = validationResult(req);
+
+    if (!result.isEmpty()) {
+      const firstError = translateErrors(req.t, result.array())[0];
+
+      return res.redirect(
+        `/profile?error=${encodeURIComponent(firstError.msg)}`,
+      );
+    }
+
+    const checkIn = await CheckIn.findOne({
+      _id: req.params.id,
+      userId: req.session.userId,
+    });
+
+    if (!checkIn) {
+      return res.status(404).render("error", {
+        title: req.t("errors.notFoundTitle"),
+        message: req.t("errors.notFoundMsg"),
+      });
+    }
+
+    checkIn.reflection = req.body.reflection || "";
+    checkIn.reflectionUpdatedAt = new Date();
+
+    await checkIn.save();
+
+    res.redirect("/profile?reflection=updated");
+  },
 );
 
 module.exports = router;

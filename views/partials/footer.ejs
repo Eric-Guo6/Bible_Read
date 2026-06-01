@@ -31,6 +31,17 @@
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js");
   }
+
+  document.querySelectorAll(".reflection-edit-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const form = button.closest(".reflection-edit-form");
+      const textarea = form.querySelector(".reflection-edit-textarea");
+
+      textarea.removeAttribute("readonly");
+      textarea.focus();
+      textarea.classList.add("is-editing");
+    });
+  });
 </script>
 </body>
 

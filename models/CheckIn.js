@@ -29,6 +29,14 @@ const checkInSchema = new mongoose.Schema({
     trim: true,
     default: "",
   },
+  reflectionWithdrawn: {
+    type: Boolean,
+    default: false,
+  },
+  reflectionUpdatedAt: {
+    type: Date,
+    default: null,
+  },
   completed: {
     type: Boolean,
     default: true,
